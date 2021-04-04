@@ -1,9 +1,12 @@
 package io.dolphin.web.config;
 
 import io.dolphin.web.filter.TimeFilter;
+import io.dolphin.web.interceptor.TimeInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
@@ -14,9 +17,9 @@ import java.util.List;
  * @create 2019 07 20 17:46
  */
 @Configuration
-public class WebConfig {
-    //@Autowired
-    //private TimeInterceptor timeInterceptor;
+public class WebConfig extends WebMvcConfigurerAdapter {
+    @Autowired
+    private TimeInterceptor timeInterceptor;
 
     @Bean
     public FilterRegistrationBean timeFilter() {
@@ -31,8 +34,8 @@ public class WebConfig {
         return registrationBean;
     }
 
-    //@Override
-    //public void addInterceptors(InterceptorRegistry registry) {
-    //    //registry.addInterceptor(timeInterceptor);
-    //}
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(timeInterceptor);
+    }
 }
