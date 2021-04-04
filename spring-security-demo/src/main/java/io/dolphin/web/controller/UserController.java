@@ -2,6 +2,7 @@ package io.dolphin.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import io.dolphin.dto.User;
+import io.dolphin.exception.UserNotExistException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,13 +35,13 @@ public class UserController {
     @JsonView(User.UserDetailView.class)
     //@ApiOperation(value = "用户查询服务")
     public User getInfo(@PathVariable String id) {
-        System.out.println("进入getInfo服务");
+        //System.out.println("进入getInfo服务");
+        //
+        //User user = new User();
+        //user.setUsername("tom");
+        //return user;
 
-        User user = new User();
-        user.setUsername("tom");
-        return user;
-
-        //throw new UserNotExistException(id);
+        throw new UserNotExistException(id);
     }
 
     @PostMapping
