@@ -17,11 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 public class TimeInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        request.setAttribute("startTime", System.currentTimeMillis());
         if (handler instanceof HandlerMethod) {
             System.out.println("preHandle");
             System.out.println(((HandlerMethod)handler).getBean().getClass().getName());
             System.out.println(((HandlerMethod)handler).getMethod().getName());
-            request.setAttribute("startTime", System.currentTimeMillis());
             return true;
         } else if (handler instanceof ResourceHttpRequestHandler) {
             return true;

@@ -23,6 +23,6 @@ public class TimeAspect {
         Object proceed = pjp.proceed();
         System.out.println("time aspect 耗时:" + (System.currentTimeMillis() - start));
         System.out.println("time aspect end");
-        return null;
+        return proceed;
     }
 }
