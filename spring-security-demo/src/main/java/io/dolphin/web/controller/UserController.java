@@ -3,6 +3,8 @@ package io.dolphin.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import io.dolphin.dto.User;
 import io.dolphin.exception.UserNotExistException;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,8 +35,8 @@ public class UserController {
 
     @GetMapping(value = "/{id:\\d+}")
     @JsonView(User.UserDetailView.class)
-    //@ApiOperation(value = "用户查询服务")
-    public User getInfo(@PathVariable String id) {
+    @ApiOperation(value = "用户查询服务")
+    public User getInfo(@ApiParam(value = "用户id") @PathVariable String id) {
         System.out.println("进入getInfo服务");
 
         User user = new User();
