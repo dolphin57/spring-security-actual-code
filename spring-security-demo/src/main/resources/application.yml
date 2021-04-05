@@ -6,3 +6,5 @@ spring:
     password: 123456
   session:
     store-type: none
+server:
+  port: 8081
