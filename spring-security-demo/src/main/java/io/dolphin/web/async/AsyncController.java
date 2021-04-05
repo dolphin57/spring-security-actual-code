@@ -16,11 +16,11 @@ import java.util.concurrent.Callable;
 @RestController
 @Slf4j
 public class AsyncController {
-    //@Autowired
-    //private MockQueue mockQueue;
-    //
-    //@Autowired
-    //private DeferredResultHolder deferredResultHolder;
+    @Autowired
+    private MockQueue mockQueue;
+
+    @Autowired
+    private DeferredResultHolder deferredResultHolder;
 
     @RequestMapping("/order")
     public Callable<String> order() throws InterruptedException {
@@ -34,6 +34,20 @@ public class AsyncController {
                 return "success";
             }
         };
+
+        log.info("主线程返回");
+        return result;
+    }
+
+    @RequestMapping("/orderDeferred")
+    public DeferredResult<String> orderDeferred() throws InterruptedException {
+        log.info("主线程开始");
+
+        String orderNumber = RandomStringUtils.randomNumeric(8);
+        mockQueue.setPlaceOrder(orderNumber);
+
+        DeferredResult<String> result = new DeferredResult<>();
+        deferredResultHolder.getMap().put(orderNumber, result);
 
         log.info("主线程返回");
         return result;
