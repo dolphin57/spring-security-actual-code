@@ -28,6 +28,7 @@ public class MyUserDetailsService implements UserDetailsService {
         String password = passwordEncoder.encode("123456");
         log.info("数据库密码:"+password);
         return new User(username, password,
+                true, true, true, false,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
