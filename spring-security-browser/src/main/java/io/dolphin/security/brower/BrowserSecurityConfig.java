@@ -22,12 +22,20 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http// 表单登录
             .formLogin()
+            // 登录页面
+            .loginPage("/eric-signIn.html")
+            // 让UsernamePasswordAuthenticationFilter去处理此路径
+            .loginProcessingUrl("/authentication/form")
             .and()
             // 授权配置
             .authorizeRequests()
+            // 匹配器去匹配页面就允许通过
+            .antMatchers("/eric-signIn.html").permitAll()
             // 任何请求
             .anyRequest()
             // 都需要身份认证
-            .authenticated();
+            .authenticated()
+            // 去掉跨域请求防护
+            .and().csrf().disable();
     }
 }

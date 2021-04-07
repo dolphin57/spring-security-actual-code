@@ -25,10 +25,11 @@ public class MyUserDetailsService implements UserDetailsService {
         log.info("登陆用户名:" + username);
         // 根据用户名查找用户信息
         // 根据查找到的用户信息判断用户是否被冻结
+        // encode是在登录的时候去做，然后此处从数据库取值
         String password = passwordEncoder.encode("123456");
         log.info("数据库密码:"+password);
         return new User(username, password,
-                true, true, true, false,
+                true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
