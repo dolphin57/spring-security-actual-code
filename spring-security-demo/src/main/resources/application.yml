@@ -8,3 +8,7 @@ spring:
     store-type: none
 server:
   port: 8081
+#dolphin:
+#  security:
+#    browser:
+#      loginPage: /demo-signIn.html
