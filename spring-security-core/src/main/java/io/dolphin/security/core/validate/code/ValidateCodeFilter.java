@@ -1,5 +1,6 @@
 package io.dolphin.security.core.validate.code;
 
+import io.dolphin.security.core.properties.SecurityProperties;
 import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -29,14 +30,16 @@ import java.util.Set;
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
     private AuthenticationFailureHandler authenticationFailureHandler;
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+    // 需拦截的urls
     private Set<String> urls = new HashSet<>();
     private AntPathMatcher pathMatcher = new AntPathMatcher();
+    private SecurityProperties securityProperties;
 
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
         String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(
-                "/user", ",");
+                securityProperties.getCode().getImage().getUrl(), ",");
         if (configUrls != null && configUrls.length != 0) {
             for (String configUrl : configUrls) {
                 urls.add(configUrl);
@@ -47,6 +50,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 循环请求判断
         boolean action = false;
         for (String url : urls) {
             if (pathMatcher.match(url, request.getRequestURI())) {

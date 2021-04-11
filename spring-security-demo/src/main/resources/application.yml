@@ -15,6 +15,7 @@ dolphin:
       image:
         length: 6
         width: 100
+        url: /user,/user/*
 #    browser:
 #      loginType: REDIRECT
 #      loginPage: /demo-signIn.html
