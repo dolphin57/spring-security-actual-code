@@ -1,6 +1,7 @@
 package io.dolphin.security.brower;
 
 import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author Eric
@@ -33,7 +35,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http// 表单登录
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(dolphinAuthenticationFailureHandler);
+        validateCodeFilter.afterPropertiesSet();
+
+        // 在usernamePassword过滤器前加入验证码过滤器
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+            // 表单登录
             .formLogin()
             // 登录页面
             .loginPage("/authentication/require")
