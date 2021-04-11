@@ -48,7 +48,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             // 匹配器去匹配页面就允许通过
             .antMatchers("/authentication/require",
-                    securityProperties.getBrowser().getLoginPage()).permitAll()
+                    securityProperties.getBrowser().getLoginPage(),
+                    "/code/image").permitAll()
             // 任何请求
             .anyRequest()
             // 都需要身份认证
