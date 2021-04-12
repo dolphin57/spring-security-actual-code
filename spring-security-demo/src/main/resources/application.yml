@@ -8,14 +8,14 @@ spring:
     store-type: none
 server:
   port: 8081
-dolphin:
-  security:
-    # 应用级配置
-    code:
-      image:
-        length: 6
-        width: 100
-        url: /user,/user/*
+#dolphin:
+#  security:
+#    # 应用级配置
+#    code:
+#      image:
+#        length: 6
+#        width: 100
+#        url: /user,/user/*
 #    browser:
 #      loginType: REDIRECT
 #      loginPage: /demo-signIn.html

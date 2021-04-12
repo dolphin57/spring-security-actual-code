@@ -3,15 +3,21 @@ package io.dolphin.security.brower;
 import io.dolphin.security.core.properties.SecurityProperties;
 import io.dolphin.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 /**
  * @author Eric
@@ -23,6 +29,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     private SecurityProperties securityProperties;
 
     @Autowired
+    private DataSource dataSource;
+
+    @Qualifier("myUserDetailsService")
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
     private AuthenticationSuccessHandler dolphinAuthenticationSuccessHandler;
 
     @Autowired
@@ -31,6 +44,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        // 启动的时候去执行create table语句
+        //tokenRepository.setCreateTableOnStartup(true);
+        return tokenRepository;
     }
 
     @Override
@@ -44,26 +66,33 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
             // 表单登录
             .formLogin()
-            // 登录页面
-            .loginPage("/authentication/require")
-            // 让UsernamePasswordAuthenticationFilter去处理此路径
-            .loginProcessingUrl("/authentication/form")
-            // 成功处理器
-            .successHandler(dolphinAuthenticationSuccessHandler)
-            // 失败处理器
-            .failureHandler(dolphinAuthenticationFailureHandler)
-            .and()
+                // 登录页面
+                .loginPage("/authentication/require")
+                // 让UsernamePasswordAuthenticationFilter去处理此路径
+                .loginProcessingUrl("/authentication/form")
+                // 成功处理器
+                .successHandler(dolphinAuthenticationSuccessHandler)
+                // 失败处理器
+                .failureHandler(dolphinAuthenticationFailureHandler)
+                .and()
+            // 记住我配置
+            .rememberMe()
+                .tokenRepository(persistentTokenRepository())
+                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSecond())
+                .userDetailsService(userDetailsService)
+                .and()
             // 授权配置
             .authorizeRequests()
-            // 匹配器去匹配页面就允许通过
-            .antMatchers("/authentication/require",
-                    securityProperties.getBrowser().getLoginPage(),
-                    "/code/image").permitAll()
-            // 任何请求
-            .anyRequest()
-            // 都需要身份认证
-            .authenticated()
-            // 去掉跨域请求防护
-            .and().csrf().disable();
+                // 匹配器去匹配页面就允许通过
+                .antMatchers("/authentication/require",
+                        securityProperties.getBrowser().getLoginPage(),
+                        "/code/image").permitAll()
+                // 任何请求
+                .anyRequest()
+                // 都需要身份认证
+                .authenticated()
+                // 去掉跨域请求防护
+                .and()
+            .csrf().disable();
     }
 }
