@@ -1,6 +1,7 @@
-package io.dolphin.security.core.validate.code;
+package io.dolphin.security.core.validate.code.image;
 
 import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.validate.code.ValidateCodeGenerator;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -15,7 +16,7 @@ import java.util.Random;
  * @create 2019 07 28 17:41
  */
 @Data
-public class ImageCodeGenerator implements ValidateCodeGenerator{
+public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
     private SecurityProperties securityProperties;

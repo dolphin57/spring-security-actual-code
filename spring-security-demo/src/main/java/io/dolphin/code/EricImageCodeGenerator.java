@@ -1,8 +1,7 @@
 package io.dolphin.code;
 
-import io.dolphin.security.core.validate.code.ImageCode;
+import io.dolphin.security.core.validate.code.image.ImageCode;
 import io.dolphin.security.core.validate.code.ValidateCodeGenerator;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**

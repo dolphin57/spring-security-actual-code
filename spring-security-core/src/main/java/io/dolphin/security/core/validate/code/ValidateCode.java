@@ -14,13 +14,11 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ImageCode {
-    private BufferedImage image;
+public class ValidateCode {
     private String code;
     private LocalDateTime expireTime;
 
-    public ImageCode(BufferedImage image, String code, int expireInt) {
-        this.image = image;
+    public ValidateCode(String code, int expireInt) {
         this.code = code;
         this.expireTime = LocalDateTime.now().plusSeconds(expireInt);
     }
