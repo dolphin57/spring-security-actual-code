@@ -30,6 +30,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
 
+    /**
+     * 系統配置
+     */
     @Autowired
     private SecurityProperties securityProperties;
 
@@ -43,9 +46,15 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      * 存放所有需要校验验证码的url
      */
     private Map<String, ValidateCodeType> urlMap = new HashMap<>();
-
+    /**
+     * 验证请求url与配置的url是否匹配的工具类
+     */
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
+    /**
+     * 初始化要拦截的url配置信息
+     * @throws ServletException
+     */
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
