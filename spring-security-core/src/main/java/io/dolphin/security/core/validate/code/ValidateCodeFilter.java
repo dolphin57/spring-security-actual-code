@@ -2,19 +2,13 @@ package io.dolphin.security.core.validate.code;
 
 import io.dolphin.security.core.properties.SecurityConstants;
 import io.dolphin.security.core.properties.SecurityProperties;
-import io.dolphin.security.core.validate.code.image.ImageCode;
-import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
-import org.springframework.web.bind.ServletRequestBindingException;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,19 +17,18 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Eric
  * @create 2019 07 27 18:25
  */
-@Data
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
     @Autowired
     private AuthenticationFailureHandler authenticationFailureHandler;
-
-    private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -106,5 +99,13 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
             }
         }
         return result;
+    }
+
+    public void setAuthenticationFailureHandler(AuthenticationFailureHandler authenticationFailureHandler) {
+        this.authenticationFailureHandler = authenticationFailureHandler;
+    }
+
+    public void setSecurityProperties(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
     }
 }
