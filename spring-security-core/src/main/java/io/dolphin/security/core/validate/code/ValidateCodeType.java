@@ -4,7 +4,7 @@ import io.dolphin.security.core.properties.SecurityConstants;
 
 /**
  * @Description:
- * @Author: qianliang
+ * @Author: dolphin
  * @Since: 2021-4-13 8:16
  */
 public enum ValidateCodeType {

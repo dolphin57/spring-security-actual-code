@@ -8,8 +8,12 @@ spring:
     store-type: none
 server:
   port: 8081
-#dolphin:
-#  security:
+dolphin:
+  security:
+    social:
+      qq:
+        app-id:
+        app-secret:
 #    # 应用级配置
 #    code:
 #      image:
