@@ -10,6 +10,7 @@ import static io.dolphin.security.core.properties.LoginType.JSON;
  */
 @Data
 public class BrowserProperties {
+    private String signUpUrl = "/eric-signUp.html";
     private String loginPage = "/eric-signIn.html";
     private LoginType loginType = JSON;
     private int rememberMeSecond = 3600;
