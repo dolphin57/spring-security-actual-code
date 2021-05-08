@@ -95,6 +95,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)
                 .and()
                 .and()
+            .logout()
+                .logoutUrl("/signOut")
+                .logoutSuccessUrl("/eric-logout.html")
+                .deleteCookies("JSESSIONID")
+                .and()
             // 授权配置
             .authorizeRequests()
                 // 匹配器去匹配页面就允许通过
@@ -102,6 +107,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         securityProperties.getBrowser().getLoginPage(),
                         securityProperties.getBrowser().getSignUpUrl(),
+                        securityProperties.getBrowser().getSignOutUrl(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         "/user/regist", "/session/invalid")
                         .permitAll()
