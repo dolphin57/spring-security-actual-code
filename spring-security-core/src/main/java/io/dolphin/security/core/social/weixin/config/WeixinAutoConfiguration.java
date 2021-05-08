@@ -5,6 +5,7 @@ package io.dolphin.security.core.social.weixin.config;
 
 import io.dolphin.security.core.properties.SecurityProperties;
 import io.dolphin.security.core.properties.WeixinProperties;
+import io.dolphin.security.core.social.DolphinConnectView;
 import io.dolphin.security.core.social.config.SocialAutoConfigurerAdapter;
 import io.dolphin.security.core.social.weixin.connect.WeixinConnectionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,10 +43,10 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 				weixinConfig.getAppSecret());
 	}
 	
-	//@Bean({"connect/weixinConnect", "connect/weixinConnected"})
-	//@ConditionalOnMissingBean(name = "weixinConnectedView")
-	//public View weixinConnectedView() {
-	//	return new ImoocConnectView();
-	//}
+	@Bean({"connect/weixinConnect", "connect/weixinConnected"})
+	@ConditionalOnMissingBean(name = "weixinConnectedView")
+	public View weixinConnectedView() {
+		return new DolphinConnectView();
+	}
 	
 }

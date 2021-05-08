@@ -1,5 +1,6 @@
 package io.dolphin.security.brower;
 
+import io.dolphin.security.brower.session.DolphinExpiredSessionStrategy;
 import io.dolphin.security.core.authentication.AbstractChannelSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import io.dolphin.security.core.properties.SecurityConstants;
@@ -18,6 +19,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -46,6 +49,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+    @Autowired
+    private InvalidSessionStrategy invalidSessionStrategy;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -78,6 +87,14 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSecond())
                 .userDetailsService(userDetailsService)
                 .and()
+            // session管理
+            .sessionManagement()
+                .invalidSessionStrategy(invalidSessionStrategy)
+                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                .expiredSessionStrategy(sessionInformationExpiredStrategy)
+                .and()
+                .and()
             // 授权配置
             .authorizeRequests()
                 // 匹配器去匹配页面就允许通过
@@ -86,7 +103,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                         securityProperties.getBrowser().getLoginPage(),
                         securityProperties.getBrowser().getSignUpUrl(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        "/user/regist")
+                        "/user/regist", "/session/invalid")
                         .permitAll()
                 // 任何请求
                 .anyRequest()

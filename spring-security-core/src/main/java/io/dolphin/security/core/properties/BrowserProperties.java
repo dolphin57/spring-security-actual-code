@@ -14,4 +14,6 @@ public class BrowserProperties {
     private String loginPage = "/eric-signIn.html";
     private LoginType loginType = JSON;
     private int rememberMeSecond = 3600;
+
+    private SessionProperties session = new SessionProperties();
 }

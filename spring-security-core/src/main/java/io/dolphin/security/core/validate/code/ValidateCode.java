@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +15,9 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidateCode {
+public class ValidateCode implements Serializable {
+    private final static long serialVersionUID = 1588203828504660915L;
+
     private String code;
     private LocalDateTime expireTime;
 
