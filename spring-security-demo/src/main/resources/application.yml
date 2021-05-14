@@ -33,3 +33,9 @@ dolphin:
 #    browser:
 #      loginType: REDIRECT
 #      loginPage: /demo-signIn.html
+
+security:
+  oauth2:
+    client:
+      client-id: dolphin
+      client-secret: dolphinsecret

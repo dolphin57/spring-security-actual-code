@@ -4,7 +4,7 @@
 package io.dolphin.security.brower.session;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dolphin.security.brower.support.SimpleResponse;
+import io.dolphin.security.core.support.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

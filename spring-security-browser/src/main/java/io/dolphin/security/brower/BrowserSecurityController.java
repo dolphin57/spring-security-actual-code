@@ -1,6 +1,6 @@
 package io.dolphin.security.brower;
 
-import io.dolphin.security.brower.support.SimpleResponse;
+import io.dolphin.security.core.support.SimpleResponse;
 import io.dolphin.security.brower.support.SocialUserInfo;
 import io.dolphin.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;

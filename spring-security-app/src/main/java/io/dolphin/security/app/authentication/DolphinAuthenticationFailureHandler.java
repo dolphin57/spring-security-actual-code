@@ -1,9 +1,9 @@
-package io.dolphin.security.brower.authentication;
+package io.dolphin.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dolphin.security.core.support.SimpleResponse;
 import io.dolphin.security.core.properties.LoginType;
 import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -72,5 +72,10 @@
             <artifactId>hibernate-validator</artifactId>
             <version>7.0.0.Final</version>
         </dependency>
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>

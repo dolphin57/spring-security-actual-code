@@ -1,4 +1,4 @@
-package io.dolphin.security.brower.support;
+package io.dolphin.security.core.support;
 
 import lombok.Data;
 

@@ -1,6 +1,5 @@
 package io.dolphin.security.brower;
 
-import io.dolphin.security.brower.session.DolphinExpiredSessionStrategy;
 import io.dolphin.security.core.authentication.AbstractChannelSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import io.dolphin.security.core.properties.SecurityConstants;
@@ -12,11 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -55,11 +49,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     @Autowired
     private InvalidSessionStrategy invalidSessionStrategy;
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
