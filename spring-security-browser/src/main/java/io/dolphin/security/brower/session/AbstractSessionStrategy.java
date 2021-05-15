@@ -3,8 +3,12 @@
  */
 package io.dolphin.security.brower.session;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.dolphin.security.core.enums.ResultEnum;
 import io.dolphin.security.core.support.SimpleResponse;
+import io.dolphin.security.core.utils.ResultVOUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +25,15 @@ import java.io.IOException;
 /**
  *
  */
+@Slf4j
 public class AbstractSessionStrategy {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass());
 	/**
 	 * 跳转的url
 	 */
 	private String destinationUrl;
+
+
 	/**
 	 * 重定向策略
 	 */
@@ -36,25 +42,22 @@ public class AbstractSessionStrategy {
 	 * 跳转前是否创建新的session
 	 */
 	private boolean createNewSession = true;
-	
-	private ObjectMapper objectMapper = new ObjectMapper();
+
+	// private ObjectMapper objectMapper = new ObjectMapper();
 
 	/**
 	 * @param invalidSessionUrl
 	 */
 	public AbstractSessionStrategy(String invalidSessionUrl) {
 		Assert.isTrue(UrlUtils.isValidRedirectUrl(invalidSessionUrl), "url must start with '/' or with 'http(s)'");
+		Assert.isTrue(StringUtils.endsWithIgnoreCase(invalidSessionUrl, ".html"), "url must end with '.html'");
 		this.destinationUrl = invalidSessionUrl;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.security.web.session.InvalidSessionStrategy#
-	 * onInvalidSessionDetected(javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
-	 */
+
 	protected void onSessionInvalid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		log.info("session失效");
 
 		if (createNewSession) {
 			request.getSession();
@@ -64,23 +67,33 @@ public class AbstractSessionStrategy {
 		String targetUrl;
 
 		if (StringUtils.endsWithIgnoreCase(sourceUrl, ".html")) {
-			targetUrl = destinationUrl+".html";
-			logger.info("session失效,跳转到"+targetUrl);
+			targetUrl = destinationUrl;
+			log.info("跳转到:"+targetUrl);
 			redirectStrategy.sendRedirect(request, response, targetUrl);
-		}else{
-			String message = "session已失效";
-			if(isConcurrency()){
-				message = message + "，有可能是并发登录导致的";
-			}
+		} else {
+			Object result = buildResponseContent(request);
 			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			response.setContentType("application/json;charset=UTF-8");
-			response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(message)));
+			response.getWriter().write(JSON.toJSONString(result));
 		}
-		
+
+	}
+
+	/**
+	 * @param request
+	 * @return
+	 */
+	protected Object buildResponseContent(HttpServletRequest request) {
+		String message = "session已失效";
+		if (isConcurrency()) {
+			message = message + "，有可能是并发登录导致的";
+		}
+		return ResultVOUtil.error(ResultEnum.SESSION_INVALID.getCode(),message);
 	}
 
 	/**
 	 * session失效是否是并发导致的
+	 *
 	 * @return
 	 */
 	protected boolean isConcurrency() {
@@ -99,5 +112,4 @@ public class AbstractSessionStrategy {
 	public void setCreateNewSession(boolean createNewSession) {
 		this.createNewSession = createNewSession;
 	}
-	
 }

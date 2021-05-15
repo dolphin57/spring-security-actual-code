@@ -12,8 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
 /**
- * @author zhailiang
- *
+ * session超时的处理策略
  */
 public class DolphinInvalidSessionStrategy extends AbstractSessionStrategy implements InvalidSessionStrategy {
 
