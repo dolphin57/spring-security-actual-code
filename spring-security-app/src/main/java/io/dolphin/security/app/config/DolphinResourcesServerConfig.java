@@ -1,9 +1,8 @@
-package io.dolphin.security.app;
+package io.dolphin.security.app.config;
 
-import io.dolphin.security.app.authentication.DolphinAuthenticationFailureHandler;
-import io.dolphin.security.app.authentication.DolphinAuthenticationSuccessHandler;
+import io.dolphin.security.app.social.openid.OpenIdAuthenticationSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
-import io.dolphin.security.core.properties.SecurityConstants;
+import io.dolphin.security.core.constants.SecurityConstants;
 import io.dolphin.security.core.properties.SecurityProperties;
 import io.dolphin.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,24 +10,33 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
  * @Description:
  * @Author: dolphin
- * @Since: 2021-5-9 18:35
+ * @Since: 2021-5-15 11:03
  */
 @Configuration
 @EnableResourceServer
-public class DolphinResourceServerConfig extends ResourceServerConfigurerAdapter {
+public class DolphinResourcesServerConfig extends ResourceServerConfigurerAdapter {
     @Autowired
-    private DolphinAuthenticationSuccessHandler dolphinAuthenticationSuccessHandler;
+    protected AuthenticationSuccessHandler dolphinAuthenticationSuccessHandler;
 
     @Autowired
-    private DolphinAuthenticationFailureHandler dolphinAuthenticationFailureHandler;
+    protected AuthenticationFailureHandler dolphinAuthenticationFailureHandler;
 
     @Autowired
     private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
+    //openId校验配置类
+    @Autowired
+    private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
 
     @Autowired
     private SpringSocialConfigurer dolphinSocialSecurityConfig;
@@ -36,40 +44,38 @@ public class DolphinResourceServerConfig extends ResourceServerConfigurerAdapter
     @Autowired
     private SecurityProperties securityProperties;
 
-    @Autowired
-    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
         http.formLogin()
                 .loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
                 .loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
                 .successHandler(dolphinAuthenticationSuccessHandler)
                 .failureHandler(dolphinAuthenticationFailureHandler);
 
+        //将验证码校验逻辑放开
         http.apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
                 .and()
-                // 往过滤器链上加过滤器，拦截特定请求
                 .apply(dolphinSocialSecurityConfig)
                 .and()
-                // 授权配置
+                .apply(openIdAuthenticationSecurityConfig)
+                .and()
                 .authorizeRequests()
-                // 匹配器去匹配页面就允许通过
-                .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                .antMatchers(
+                        SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                        SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID,
                         securityProperties.getBrowser().getLoginPage(),
+                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
                         securityProperties.getBrowser().getSignUpUrl(),
+                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
                         securityProperties.getBrowser().getSignOutUrl(),
-                        SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
-                        "/user/regist", "/session/invalid")
+                        "/user/register","/social/signUp")
                 .permitAll()
-                // 任何请求
                 .anyRequest()
-                // 都需要身份认证
                 .authenticated()
-                // 去掉跨域请求防护
                 .and()
                 .csrf().disable();
     }

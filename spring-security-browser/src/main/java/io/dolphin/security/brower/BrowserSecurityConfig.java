@@ -2,7 +2,7 @@ package io.dolphin.security.brower;
 
 import io.dolphin.security.core.authentication.AbstractChannelSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
-import io.dolphin.security.core.properties.SecurityConstants;
+import io.dolphin.security.core.constants.SecurityConstants;
 import io.dolphin.security.core.properties.SecurityProperties;
 import io.dolphin.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;

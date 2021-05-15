@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code;
 
-import io.dolphin.security.core.properties.SecurityConstants;
+import io.dolphin.security.core.constants.SecurityConstants;
 
 /**
  * @Description:

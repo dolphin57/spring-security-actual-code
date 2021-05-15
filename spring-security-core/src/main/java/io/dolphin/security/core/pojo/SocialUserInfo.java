@@ -1,4 +1,4 @@
-package io.dolphin.security.brower.support;
+package io.dolphin.security.core.pojo;
 
 import lombok.Data;
 
@@ -13,7 +13,7 @@ public class SocialUserInfo {
 
     private String providerUserId;
 
-    private String nickname;
+    private String nickName;
 
-    private String headimg;
+    private String headImg;
 }

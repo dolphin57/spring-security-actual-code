@@ -1,6 +1,6 @@
 package io.dolphin.security.core.authentication;
 
-import io.dolphin.security.core.properties.SecurityConstants;
+import io.dolphin.security.core.constants.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;

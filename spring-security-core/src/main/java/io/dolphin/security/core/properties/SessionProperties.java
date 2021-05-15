@@ -3,6 +3,8 @@
  */
 package io.dolphin.security.core.properties;
 
+import io.dolphin.security.core.constants.SecurityConstants;
+
 /**
  *
  */

@@ -34,8 +34,11 @@ public class DolphinAuthenticationFailureHandler extends SimpleUrlAuthentication
         log.info("登录失败");
 
         if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
+            // 修改状态码
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            // 设置返回内容的数据形式和编码格式
             response.setContentType("application/json;charset=UTF-8");
+            // 将抓到的错误信息以json数据的形式进行返回
             response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
         } else {
             super.onAuthenticationFailure(request, response, exception);

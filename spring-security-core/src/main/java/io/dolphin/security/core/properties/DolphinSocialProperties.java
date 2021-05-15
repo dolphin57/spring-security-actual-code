@@ -8,7 +8,7 @@ import lombok.Data;
  * @Since: 2021-4-25 8:06
  */
 @Data
-public class SocialProperties {
+public class DolphinSocialProperties {
     private String filterProcessesUrl = "/auth";
 
     private QQProperties qq = new QQProperties();

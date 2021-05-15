@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code.sms;
 
-import io.dolphin.security.core.properties.SecurityConstants;
+import io.dolphin.security.core.constants.SecurityConstants;
 import io.dolphin.security.core.validate.code.AbstractValidateCodeProcessor;
 import io.dolphin.security.core.validate.code.ValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
