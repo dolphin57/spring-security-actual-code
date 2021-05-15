@@ -2,8 +2,7 @@ package io.dolphin.security.brower.config;
 
 import com.alibaba.fastjson.JSON;
 import io.dolphin.security.core.enums.ResultEnum;
-import io.dolphin.security.core.properties.LoginType;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.utils.ResultVOUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +29,7 @@ public class DolphinAuthenticationFailureHandler extends SimpleUrlAuthentication
 //    private ObjectMapper objectMapper;
 
     @Autowired
-    private SecurityProperties dolphinSecurityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     /**
      * AuthenticationException里封装了用户登陆失败的错误信息

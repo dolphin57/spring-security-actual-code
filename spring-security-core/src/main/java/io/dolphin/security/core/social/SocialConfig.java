@@ -1,6 +1,6 @@
 package io.dolphin.security.core.social;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,7 +28,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
     private DataSource dataSource;
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Autowired(required = false)
     private ConnectionSignUp connectionSignUp;
@@ -44,9 +44,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
     @Bean
     public SpringSocialConfigurer dolphinSocialSecurityConfig() {
-        String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
+        String filterProcessesUrl = dolphinSecurityProperties.getSocial().getFilterProcessesUrl();
         DolphinSpringSocialConfigurer socialConfigurer = new DolphinSpringSocialConfigurer(filterProcessesUrl);
-        socialConfigurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+        socialConfigurer.signupUrl(dolphinSecurityProperties.getBrowser().getSignUpUrl());
         return socialConfigurer;
     }
 

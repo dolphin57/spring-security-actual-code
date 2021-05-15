@@ -1,7 +1,7 @@
 package io.dolphin.security.core.validate.code;
 
 import io.dolphin.security.core.constants.SecurityConstants;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
      * 系統配置
      */
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     /**
      * 系统中的校验码处理器
@@ -60,10 +60,10 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         super.afterPropertiesSet();
 
         urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
-        addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
+        addUrlToMap(dolphinSecurityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
 
         urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
-        addUrlToMap(securityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
+        addUrlToMap(dolphinSecurityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
     }
 
     protected void addUrlToMap(String urlString, ValidateCodeType type) {
@@ -114,7 +114,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         this.authenticationFailureHandler = authenticationFailureHandler;
     }
 
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
+    public void setSecurityProperties(DolphinSecurityProperties dolphinSecurityProperties) {
+        this.dolphinSecurityProperties = dolphinSecurityProperties;
     }
 }

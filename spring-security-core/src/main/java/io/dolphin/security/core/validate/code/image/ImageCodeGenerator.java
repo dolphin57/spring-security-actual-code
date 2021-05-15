@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code.image;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.validate.code.ValidateCodeGenerator;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +19,14 @@ import java.util.Random;
 public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Override
     public ImageCode generate(ServletWebRequest request) {
         int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
-                securityProperties.getCode().getImage().getWidth());
+                dolphinSecurityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height",
-                securityProperties.getCode().getImage().getHeight());
+                dolphinSecurityProperties.getCode().getImage().getHeight());
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics g = image.getGraphics();
@@ -46,7 +46,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
         }
 
         String sRand = "";
-        for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
+        for (int i = 0; i < dolphinSecurityProperties.getCode().getImage().getLength(); i++) {
             String rand = String.valueOf(random.nextInt(10));
             sRand += rand;
             g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
@@ -55,7 +55,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
 
         g.dispose();
 
-        return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
+        return new ImageCode(image, sRand, dolphinSecurityProperties.getCode().getImage().getExpireIn());
     }
 
     /**

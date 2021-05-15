@@ -1,7 +1,7 @@
 package io.dolphin.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -34,7 +34,7 @@ public class DolphinAuthenticationSuccessHandler extends SavedRequestAwareAuthen
     private ObjectMapper objectMapper;
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Autowired
     private ClientDetailsService clientDetailsService;

@@ -3,7 +3,7 @@
  */
 package io.dolphin.security.core.social.weixin.config;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.properties.WeixinProperties;
 import io.dolphin.security.core.social.DolphinConnectView;
 import io.dolphin.security.core.social.config.SocialAutoConfigurerAdapter;
@@ -27,7 +27,7 @@ import org.springframework.web.servlet.View;
 public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 
 	@Autowired
-	private SecurityProperties securityProperties;
+	private DolphinSecurityProperties dolphinSecurityProperties;
 
 	/*
 	 * (non-Javadoc)
@@ -38,7 +38,7 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 	 */
 	@Override
 	protected ConnectionFactory<?> createConnectionFactory() {
-		WeixinProperties weixinConfig = securityProperties.getSocial().getWeixin();
+		WeixinProperties weixinConfig = dolphinSecurityProperties.getSocial().getWeixin();
 		return new WeixinConnectionFactory(weixinConfig.getProviderId(), weixinConfig.getAppId(),
 				weixinConfig.getAppSecret());
 	}

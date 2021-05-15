@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "dolphin.security")
-public class SecurityProperties {
+public class DolphinSecurityProperties {
 
     /***封装浏览器相关的属性*/
     private BrowserProperties browser = new BrowserProperties();

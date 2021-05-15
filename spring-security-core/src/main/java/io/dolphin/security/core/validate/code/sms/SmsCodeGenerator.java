@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code.sms;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.validate.code.ValidateCode;
 import io.dolphin.security.core.validate.code.ValidateCodeGenerator;
 import lombok.Data;
@@ -18,11 +18,11 @@ import org.springframework.web.context.request.ServletWebRequest;
 public class SmsCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Override
     public ValidateCode generate(ServletWebRequest request) {
-        String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
-        return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
+        String code = RandomStringUtils.randomNumeric(dolphinSecurityProperties.getCode().getSms().getLength());
+        return new ValidateCode(code, dolphinSecurityProperties.getCode().getSms().getExpireIn());
     }
 }

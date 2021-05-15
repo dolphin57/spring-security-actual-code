@@ -3,7 +3,7 @@ package io.dolphin.security.brower;
 import io.dolphin.security.core.authentication.AbstractChannelSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import io.dolphin.security.core.constants.SecurityConstants;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 @Configuration
 public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Autowired
     private DataSource dataSource;
@@ -73,14 +73,14 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
             // 记住我配置
             .rememberMe()
                 .tokenRepository(persistentTokenRepository())
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSecond())
+                .tokenValiditySeconds(dolphinSecurityProperties.getBrowser().getRememberMeSecond())
                 .userDetailsService(userDetailsService)
                 .and()
             // session管理
             .sessionManagement()
                 .invalidSessionStrategy(invalidSessionStrategy)
-                .maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
-                .maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+                .maximumSessions(dolphinSecurityProperties.getBrowser().getSession().getMaximumSessions())
+                .maxSessionsPreventsLogin(dolphinSecurityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
                 .expiredSessionStrategy(sessionInformationExpiredStrategy)
                 .and()
                 .and()
@@ -94,9 +94,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 // 匹配器去匹配页面就允许通过
                 .antMatchers(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                        securityProperties.getBrowser().getLoginPage(),
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
+                        dolphinSecurityProperties.getBrowser().getLoginPage(),
+                        dolphinSecurityProperties.getBrowser().getSignUpUrl(),
+                        dolphinSecurityProperties.getBrowser().getSignOutUrl(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*",
                         "/user/regist", "/session/invalid")
                         .permitAll()

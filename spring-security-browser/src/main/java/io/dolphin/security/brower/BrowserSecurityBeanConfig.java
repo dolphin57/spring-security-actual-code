@@ -3,7 +3,7 @@ package io.dolphin.security.brower;
 import io.dolphin.security.brower.logout.DolphinLogoutSuccessHandler;
 import io.dolphin.security.brower.session.DolphinExpiredSessionStrategy;
 import io.dolphin.security.brower.session.DolphinInvalidSessionStrategy;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -21,24 +21,24 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 public class BrowserSecurityBeanConfig {
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Bean
     //用户可以通过实现一个InvalidSessionStrategy类型的bean来覆盖掉默认的实现--》NRSCInvalidSessionStrategy
     @ConditionalOnMissingBean(InvalidSessionStrategy.class)
     public InvalidSessionStrategy invalidSessionStrategy(){
-        return new DolphinInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
+        return new DolphinInvalidSessionStrategy(dolphinSecurityProperties.getBrowser().getSession().getSessionInvalidUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean(SessionInformationExpiredStrategy.class)
     public SessionInformationExpiredStrategy sessionInformationExpiredStrategy(){
-        return new DolphinExpiredSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
+        return new DolphinExpiredSessionStrategy(dolphinSecurityProperties.getBrowser().getSession().getSessionInvalidUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean(LogoutSuccessHandler.class)
     public LogoutSuccessHandler logoutSuccessHandler(){
-        return new DolphinLogoutSuccessHandler(securityProperties.getBrowser().getSignOutUrl());
+        return new DolphinLogoutSuccessHandler(dolphinSecurityProperties.getBrowser().getSignOutUrl());
     }
 }

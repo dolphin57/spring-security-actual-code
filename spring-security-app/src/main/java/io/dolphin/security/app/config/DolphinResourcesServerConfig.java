@@ -3,7 +3,7 @@ package io.dolphin.security.app.config;
 import io.dolphin.security.app.social.openid.OpenIdAuthenticationSecurityConfig;
 import io.dolphin.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import io.dolphin.security.core.constants.SecurityConstants;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.validate.ValidateCodeSecurityConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +42,7 @@ public class DolphinResourcesServerConfig extends ResourceServerConfigurerAdapte
     private SpringSocialConfigurer dolphinSocialSecurityConfig;
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -67,11 +67,11 @@ public class DolphinResourcesServerConfig extends ResourceServerConfigurerAdapte
                         SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
                         SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID,
-                        securityProperties.getBrowser().getLoginPage(),
+                        dolphinSecurityProperties.getBrowser().getLoginPage(),
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-                        securityProperties.getBrowser().getSignUpUrl(),
-                        securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-                        securityProperties.getBrowser().getSignOutUrl(),
+                        dolphinSecurityProperties.getBrowser().getSignUpUrl(),
+                        dolphinSecurityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+                        dolphinSecurityProperties.getBrowser().getSignOutUrl(),
                         "/user/register","/social/signUp")
                 .permitAll()
                 .anyRequest()

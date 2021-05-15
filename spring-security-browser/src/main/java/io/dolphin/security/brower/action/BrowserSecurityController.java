@@ -3,7 +3,7 @@ package io.dolphin.security.brower.action;
 import io.dolphin.security.core.constants.SecurityConstants;
 import io.dolphin.security.core.enums.ResultEnum;
 import io.dolphin.security.core.pojo.SocialUserInfo;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.utils.ResultVOUtil;
 import io.dolphin.security.core.vo.ResultVO;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +45,7 @@ public class BrowserSecurityController {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     //如果用户输入以.html结尾的url时,跳转到从配置文件yml或properties里拿出配置的登陆页面
     @Autowired
-    private SecurityProperties dolphinSecurityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Autowired
     private ProviderSignInUtils providerSignInUtils;

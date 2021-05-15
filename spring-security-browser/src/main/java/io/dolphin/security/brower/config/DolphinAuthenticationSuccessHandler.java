@@ -1,8 +1,7 @@
 package io.dolphin.security.brower.config;
 
 import com.alibaba.fastjson.JSON;
-import io.dolphin.security.core.properties.LoginType;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,7 +26,7 @@ public class DolphinAuthenticationSuccessHandler extends SavedRequestAwareAuthen
 //    private ObjectMapper objectMapper;
 
     @Autowired
-    private SecurityProperties dolphinSecurityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
     /**
      * Authentication封装了用户认证成功的信息
      */

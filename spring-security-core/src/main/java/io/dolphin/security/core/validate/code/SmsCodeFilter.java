@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -33,14 +33,14 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
 
     private Set<String> urls = new HashSet<>();
 
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String url = securityProperties.getCode().getSms().getUrl();
+        String url = dolphinSecurityProperties.getCode().getSms().getUrl();
         if (StringUtils.isNotBlank(url)) {
             urls.addAll(Arrays.asList(StringUtils.splitByWholeSeparatorPreserveAllTokens(url, ",")));
         }
@@ -106,11 +106,11 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         this.sessionStrategy = sessionStrategy;
     }
 
-    public SecurityProperties getSecurityProperties() {
-        return securityProperties;
+    public DolphinSecurityProperties getSecurityProperties() {
+        return dolphinSecurityProperties;
     }
 
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
+    public void setSecurityProperties(DolphinSecurityProperties dolphinSecurityProperties) {
+        this.dolphinSecurityProperties = dolphinSecurityProperties;
     }
 }

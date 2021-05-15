@@ -1,7 +1,7 @@
 package io.dolphin.security.app.config;
 
 import io.dolphin.security.app.pojo.DolphinJwtTokenEnhancer;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -45,7 +45,7 @@ public class TokenStoreConfig {
     public static class JwtConfig {
 
         @Autowired
-        private SecurityProperties securityProperties;
+        private DolphinSecurityProperties dolphinSecurityProperties;
 
         /***
          * 配置JwtTokenStore ---> TokenStore只负责token的存储，不负责token的生成
@@ -66,7 +66,7 @@ public class TokenStoreConfig {
         public JwtAccessTokenConverter jwtAccessTokenConverter() {
             JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
             //加入密签 --- 一定要保护好
-            converter.setSigningKey(securityProperties.getOauth2().getJwtSigningKey());
+            converter.setSigningKey(dolphinSecurityProperties.getOauth2().getJwtSigningKey());
             return converter;
         }
 

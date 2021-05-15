@@ -1,6 +1,6 @@
 package io.dolphin.security.core.validate.code;
 
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.validate.code.image.ImageCodeGenerator;
 import io.dolphin.security.core.validate.code.sms.DefaultSmsCodeSender;
 import io.dolphin.security.core.validate.code.sms.SmsCodeSender;
@@ -16,13 +16,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ValidateCodeBeanConfig {
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Bean
     @ConditionalOnMissingBean(name = "imageCodeGenerator")
     public ValidateCodeGenerator imageCodeGenerator() {
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
-        codeGenerator.setSecurityProperties(securityProperties);
+        codeGenerator.setDolphinSecurityProperties(dolphinSecurityProperties);
         return codeGenerator;
     }
 

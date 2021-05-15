@@ -1,8 +1,7 @@
 package io.dolphin.security.app.authentication;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dolphin.security.core.properties.LoginType;
-import io.dolphin.security.core.properties.SecurityProperties;
+import io.dolphin.security.core.properties.DolphinSecurityProperties;
 import io.dolphin.security.core.support.SimpleResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +26,13 @@ public class DolphinAuthenticationFailureHandler extends SimpleUrlAuthentication
     private ObjectMapper objectMapper;
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private DolphinSecurityProperties dolphinSecurityProperties;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.info("登录失败");
 
-        if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
+        if (LoginType.JSON.equals(dolphinSecurityProperties.getBrowser().getLoginType())) {
             // 修改状态码
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             // 设置返回内容的数据形式和编码格式
